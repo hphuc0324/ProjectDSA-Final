@@ -3,29 +3,26 @@
 
 void mergeC(int a[], int first, int mid, int last, long long& compare) {
 
-    int first1 = first, last1 = mid, first2 = mid + 1, last2 = last; // chia lam 2 mang
-    int index = first1;
-    int* tmpArr = new int[last + first + 1]; // Tao mang phu de luu cac phan tu
+    int n1 = mid - first + 1;
+    int n2 = last - mid;
+    int* L = new int[n1];
+    int* R = new int[n2];
+    for (int i = 0; ++compare && i < n1; i++)
+        L[i] = a[first + i];
+    for (int j = 0;++compare && j < n2; j++)
+        R[j] = a[mid + j + 1];
+    int i = 0;
+    int j = 0;
+    int k = first;
+    while (++compare && i < n1 && ++compare && j < n2)
+        a[k++] = (L[i] < R[j]) ? L[i++] : R[j++];
 
-    while (++compare && first1 <= last1 && ++compare && first2 <= last2) { // Merge 2 mang lai
-        if (++compare && a[first1] < a[first2])
-            tmpArr[index++] = a[first1++];
-        else
-            tmpArr[index++] = a[first2++];
-    }
-
-    while (++compare && first1 <= last1) // Xet cac phan tu con du trong TH mang 2 da het
-        tmpArr[index++] = a[first1++];
-    while (++compare && first2 <= last2) // Xet cac phan tu con du trong TH mang 1 da het
-        tmpArr[index++] = a[first2++];
-
-    ++compare;
-    for (index = first; index <= last; index++) { // Copy vao mang chinh
-        a[index] = tmpArr[index];
-        ++compare;
-    }
-
-    delete[]tmpArr;
+    while (++compare && j < n2)
+        a[k++] = R[j++];
+    while (++compare && i < n1)
+        a[k++] = L[i++];
+    delete[] L;
+    delete[] R;
 }
 
 void mergeSortC(int a[], int first, int last, long long& compare) {
@@ -253,26 +250,26 @@ void shakerSortC(int arr[], int n, long long& compare) {
 }
 
 void merge(int a[], int first, int mid, int last) {
-    int first1 = first, last1 = mid, first2 = mid + 1, last2 = last; // chia lam 2 mang
-    int index = first1;
-    int* tmpArr = new int[last + first + 1]; // Tao mang phu de luu cac phan tu
+     int n1 = mid - first + 1;
+    int n2 = last - mid;
+    int* L = new int[n1];
+    int* R = new int[n2];
+    for (int i = 0; i < n1; i++)
+        L[i] = a[first + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = a[mid + j + 1];
+    int i = 0;
+    int j = 0;
+    int k = first;
+    while (i < n1 && j < n2)
+        a[k++] = (L[i] < R[j]) ? L[i++] : R[j++];
 
-    while (first1 <= last1 && first2 <= last2) { // Merge 2 mang lai
-        if (a[first1] < a[first2])
-            tmpArr[index++] = a[first1++];
-        else
-            tmpArr[index++] = a[first2++];
-    }
-
-    while (first1 <= last1) // Xet cac phan tu con du trong TH mang 2 da het
-        tmpArr[index++] = a[first1++];
-    while (first2 <= last2) // Xet cac phan tu con du trong TH mang 1 da het
-        tmpArr[index++] = a[first2++];
-
-    for (index = first; index <= last; index++)// Copy vao mang chinh
-        a[index] = tmpArr[index];
-
-    delete[]tmpArr;
+    while (j < n2)
+        a[k++] = R[j++];
+    while (i < n1)
+        a[k++] = L[i++];
+    delete[] L;
+    delete[] R;
 }
 
 void mergeSort(int a[], int first, int last) {
