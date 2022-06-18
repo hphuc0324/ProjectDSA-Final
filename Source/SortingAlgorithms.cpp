@@ -17,7 +17,7 @@ void mergeC(int a[], int first, int mid, int last, long long& compare) {
     int j = 0;
     int k = first;
     
-    //Compare and put the value in sorted order into the iniarrayarray
+    //Compare and put the value in sorted order into the initial array
     while (++compare && i < n1 && ++compare && j < n2)
         a[k++] = (L[i] < R[j]) ? L[i++] : R[j++];
 
@@ -32,7 +32,7 @@ void mergeC(int a[], int first, int mid, int last, long long& compare) {
 void mergeSortC(int a[], int first, int last, long long& compare) {
     if (++compare && first < last) {
         int mid = (first + last) / 2; // Divide the array into 2 parts
-        mergeSortC(a, first, mid, compare); //Use recursion to continue dividing until the array has onelementelement
+        mergeSortC(a, first, mid, compare); //Use recursion to continue dividing until the array has one element
         mergeSortC(a, mid + 1, last, compare);
         mergeC(a, first, mid, last, compare); //Merge the two sub arrays
     }
@@ -49,7 +49,7 @@ void heapRebuildC(int a[], int n, int start, long long& compare) {
     if (++compare&& rightChild < n)
         larger = a[leftChild] > a[rightChild] ? leftChild : rightChild; //Find the bigger child to build max heap(for acsending array)
 
-    if (++compare && a[start] < a[larger]) { // If the child larger than the value at the position we want to check, swapthemm
+    if (++compare && a[start] < a[larger]) { // If the child larger than the value at the position we want to check, swap themm
         swap(a[start], a[larger]);
         heapRebuildC(a, n, larger, compare);
     }
@@ -60,7 +60,7 @@ void heapSortC(int a[], int n, long long& compare) {
     for (int i = (n - 1) / 2; i >= 0; i--)
         heapRebuildC(a, n, i, compare);
 
-    swap(a[0], a[n - 1]); //Swap the biggest element to the last position of the aray
+    swap(a[0], a[n - 1]); //Swap the biggest element to the last position of the array
     int heapSize = n - 1;
     while (heapSize > 1) {
         heapRebuildC(a, heapSize, 0, compare);
@@ -115,7 +115,7 @@ void radixSortC(int a[], int n, long long& compare) {
 
         int index = 0;
         ++compare;
-        for (int j = 0; j < 10; j++) { //Put back to the initial 
+        for (int j = 0; j < 10; j++) { //Put back to the initial array
             compare += 2;
             for (int k = 0; k < tmpCount[j]; k++)
                 a[index++] = tmpArr[j][k];
