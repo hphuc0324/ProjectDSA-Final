@@ -2,7 +2,7 @@
 #include"SortingAlgorithms.h"
 #include<iomanip>
 
-bool isDigit(char* s) {
+bool isDigit(char* s) { //Check the string's elements are all digit or not
 	int i = 1;
 	while (s[i] != '\0') {
 		if (s[i] < '0' || s[i] > '9')
@@ -12,7 +12,7 @@ bool isDigit(char* s) {
 	return 1;
 }
 
-void checkAlgorithmNameC(string algorithmName, int a[], int n, long long& compare) {
+void checkAlgorithmNameC(string algorithmName, int a[], int n, long long& compare) { //Check the algorithm's name if the output is -comp
 	if (algorithmName == "selection-sort")
 		selectionSortC(a, n, compare);
 	else if (algorithmName == "insertion-sort")
@@ -39,7 +39,7 @@ void checkAlgorithmNameC(string algorithmName, int a[], int n, long long& compar
 		cout << "Unknown sorting algorithm!";
 }
 
-void checkAlgorithmNameT(string algorithmName, int a[], int n, double& time) {
+void checkAlgorithmNameT(string algorithmName, int a[], int n, double& time) { //Check the algorithm's name if the output is -time
 	if (algorithmName == "selection-sort") {
 		selectionSort(a, n, time);
 		return;
@@ -60,7 +60,7 @@ void checkAlgorithmNameT(string algorithmName, int a[], int n, double& time) {
 		shellSort(a, n, time);
 		return;
 	}
-	else if (algorithmName == "heap-sort") {
+	else if (algorithmName == "heap-sort") { //Calculate the time directly in this function with the sorting  that use recursion
 		clock_t start, end;
 		start = clock();
 		
@@ -109,7 +109,7 @@ void checkAlgorithmNameT(string algorithmName, int a[], int n, double& time) {
 		cout << "Unknown sorting algorithm!";
 }
 
-void changeName(string& name) {
+void changeName(string& name) { //Change the algorithm's name from user input to the requested form
 	for (int i = 0; i < name.size(); i++)
 		if (name[i] == '-') {
 			name[i] = ' ';
@@ -118,7 +118,7 @@ void changeName(string& name) {
 	name[0] = toupper(name[0]);
 }
 
-void checkOutput(string output, long long compare, double time) {
+void checkOutput(string output, long long compare, double time) { //Check to print the output
 	if (output == "-time")
 		cout << "Running time: " << setprecision(10) << fixed << time << "\n\n";
 	else if (output == "-comp")
@@ -129,7 +129,7 @@ void checkOutput(string output, long long compare, double time) {
 	}
 }
 
-void checkOrder(string order, int a[], int n, string& orderName) {
+void checkOrder(string order, int a[], int n, string& orderName) { // Check the order to create data
 	int type;
 	if (order == "-rand") {
 		orderName = "Randomize";
@@ -159,13 +159,15 @@ void cmd1(string algorithmName, string fileName, string output) {
 	int n;
 
 	int* a;
-	readFile(fileName, a, n);
-
+	readFile(fileName, a, n); // Read the data from the given file
+	
+	//Check the output
 	if (output == "-comp")
 		checkAlgorithmNameC(algorithmName, a, n, compare);
 	else if (output == "-time")
 		checkAlgorithmNameT(algorithmName, a, n, time);
 	else if (output == "-both") {
+		//If the output are both comparisions and time, create an array to save the data before sorting 
 		int* b;
 
 		copyArray(a, b, n);
@@ -184,7 +186,7 @@ void cmd1(string algorithmName, string fileName, string output) {
 	checkOutput(output, compare, time);
 
 	string fileOut = "output.txt";
-	writeToFile(fileOut, a, n);
+	writeToFile(fileOut, a, n); //Write the sorted array to a file
 
 
 	delete[]a;
@@ -198,7 +200,7 @@ void cmd2(string algorithmName, string order, string output, int n) {
 
 
 	int* a = new int[n];
-	checkOrder(order, a, n, orderName);
+	checkOrder(order, a, n, orderName); //Create data by the input order
 
 	string fileOut = "input.txt";
 	writeToFile(fileOut, a, n);
@@ -234,17 +236,17 @@ void cmd2(string algorithmName, string order, string output, int n) {
 void cmd3(string algorithmName, string output, int n) {
 	long long compare[4] = {};
 	double time[4] = {};
-	string orderName[4] = { "Randomize", "Sorted", "Reversed", "Nearly sorted" };
-	string fileName[4] = { "input_1.txt", "input_3.txt", "input_4.txt", "input_2.txt" };
+	string orderName[4] = { "Randomize", "Sorted", "Reversed", "Nearly sorted" }; // List of orders
+	string fileName[4] = { "input_1.txt", "input_3.txt", "input_4.txt", "input_2.txt" }; // Names of file
 
-	int** a = new int* [4];
+	int** a = new int* [4]; //Each rows of the 2D array is an 1D array containing data of an order 
 	for (int i = 0; i < 4; i++) {
 		a[i] = new int[n];
 		GenerateData(a[i], n, i);
 	}
 
 	for (int i = 0; i < 4; i++) {
-		writeToFile(fileName[i], a[i], n);
+		writeToFile(fileName[i], a[i], n); 
 		if (output == "-comp")
 			checkAlgorithmNameC(algorithmName, a[i], n, compare[i]);
 		else if (output == "-time")
