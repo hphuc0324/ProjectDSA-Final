@@ -2,11 +2,13 @@
 
 
 void mergeC(int a[], int first, int mid, int last, long long& compare) {
-
+    // Divide the array into 2 parts
     int n1 = mid - first + 1;
     int n2 = last - mid;
     int* L = new int[n1];
     int* R = new int[n2];
+    
+    // Save the value of the initial array
     for (int i = 0; ++compare && i < n1; i++)
         L[i] = a[first + i];
     for (int j = 0;++compare && j < n2; j++)
@@ -14,6 +16,8 @@ void mergeC(int a[], int first, int mid, int last, long long& compare) {
     int i = 0;
     int j = 0;
     int k = first;
+    
+    //Compare and put the value in sorted order into the iniarrayarray
     while (++compare && i < n1 && ++compare && j < n2)
         a[k++] = (L[i] < R[j]) ? L[i++] : R[j++];
 
@@ -27,35 +31,36 @@ void mergeC(int a[], int first, int mid, int last, long long& compare) {
 
 void mergeSortC(int a[], int first, int last, long long& compare) {
     if (++compare && first < last) {
-        int mid = (first + last) / 2; // Chia doi mang
-        mergeSortC(a, first, mid, compare); // Goi de quy tiep tuc chia doi mang cho den khi con 1 phan tu
+        int mid = (first + last) / 2; // Divide the array into 2 parts
+        mergeSortC(a, first, mid, compare); //Use recursion to continue dividing until the array has onelementelement
         mergeSortC(a, mid + 1, last, compare);
-        mergeC(a, first, mid, last, compare);
+        mergeC(a, first, mid, last, compare); //Merge the two sub arrays
     }
 }
 
 void heapRebuildC(int a[], int n, int start, long long& compare) {
-    int leftChild = 2 * start + 1; // Xet child dau tien trong cay
+    int leftChild = 2 * start + 1; 
 
-    if (++compare && leftChild >= n) // neu vuot qua kich thuoc mang ==> ngung lai
+    if (++compare && leftChild >= n) // If the leftchild index is bigger than the size of the array then stop
         return;
     int larger = leftChild;
-    int rightChild = 2 * start + 2; // Child con lai
+    int rightChild = 2 * start + 2; 
 
     if (++compare&& rightChild < n)
-        larger = a[leftChild] > a[rightChild] ? leftChild : rightChild; // Tim child lon hon de build max heap
+        larger = a[leftChild] > a[rightChild] ? leftChild : rightChild; //Find the bigger child to build max heap(for acsending array)
 
-    if (++compare && a[start] < a[larger]) {
+    if (++compare && a[start] < a[larger]) { // If the child larger than the value at the position we want to check, swapthemm
         swap(a[start], a[larger]);
         heapRebuildC(a, n, larger, compare);
     }
 }
 
 void heapSortC(int a[], int n, long long& compare) {
+    // Build the max heap
     for (int i = (n - 1) / 2; i >= 0; i--)
         heapRebuildC(a, n, i, compare);
 
-    swap(a[0], a[n - 1]);
+    swap(a[0], a[n - 1]); //Swap the biggest element to the last position of the aray
     int heapSize = n - 1;
     while (heapSize > 1) {
         heapRebuildC(a, heapSize, 0, compare);
@@ -73,22 +78,22 @@ void radixSortC(int a[], int n, long long& compare) {
         ++compare;
         if (a[i] > maxVal)
             maxVal = a[i];
-    } // tim phan tu lon nhat
+    } //Find the maximun element
 
     int maxDigits = 0;
     do {
         maxDigits++;
         maxVal /= 10;
-    } while (++compare && maxVal > 0); // tim so luong chu so cua phan tu lon nhat
+    } while (++compare && maxVal > 0); //Count the number of digits of the maximum element
 
-    int** tmpArr = new int* [10]; // do co toi da 10 chu so 0 - 9
+    int** tmpArr = new int* [10]; //A temporary 2D array to save the element, the index of each row is the last digit of the element 
     ++compare;
     for (int i = 0; i < 10; i++) {
         tmpArr[i] = new int[n];
         ++compare;
     }
 
-    int tmpCount[10];
+    int tmpCount[10]; // Use to save the number of elements of each digit 
 
     ++compare;
     for (int i = 0; i < maxDigits; i++) {
@@ -96,7 +101,7 @@ void radixSortC(int a[], int n, long long& compare) {
         int divide = pow(10, i);
 
         ++compare;
-        for (int j = 0; j < 10; j++) { // reset lai mang luu so luong
+        for (int j = 0; j < 10; j++) { //Reset the array
             tmpCount[j] = 0;
             ++compare;
         }
@@ -104,13 +109,13 @@ void radixSortC(int a[], int n, long long& compare) {
         ++compare;
         for (int j = 0; j < n; j++) {
             int digit = (a[j] / divide) % 10;
-            tmpArr[digit][tmpCount[digit]++] = a[j]; //Bo vao mang theo cac chu so 0 - 9
+            tmpArr[digit][tmpCount[digit]++] = a[j]; //Put into the array by last digit
             ++compare;
         }
 
         int index = 0;
         ++compare;
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 10; j++) { //Put back to the initial 
             compare += 2;
             for (int k = 0; k < tmpCount[j]; k++)
                 a[index++] = tmpArr[j][k];
@@ -274,23 +279,23 @@ void merge(int a[], int first, int mid, int last) {
 
 void mergeSort(int a[], int first, int last) {
     if (first < last) {
-        int mid = (first + last) / 2; // Chia doi mang
-        mergeSort(a, first, mid); // Goi de quy tiep tuc chia doi mang cho den khi con 1 phan tu
+        int mid = (first + last) / 2; 
+        mergeSort(a, first, mid);
         mergeSort(a, mid + 1, last);
         merge(a, first, mid, last);
     }
 }
 
 void heapRebuild(int a[], int n, int start) {
-    int leftChild = 2 * start + 1; // Xet child dau tien trong cay
+    int leftChild = 2 * start + 1; 
 
-    if (leftChild >= n) // neu vuot qua kich thuoc mang ==> ngung lai
+    if (leftChild >= n)
         return;
     int larger = leftChild;
-    int rightChild = 2 * start + 2; // Child con lai
+    int rightChild = 2 * start + 2;
 
     if (rightChild < n)
-        larger = a[leftChild] > a[rightChild] ? leftChild : rightChild; // Tim child lon hon de build max heap
+        larger = a[leftChild] > a[rightChild] ? leftChild : rightChild; 
 
     if (a[start] < a[larger]) {
         swap(a[start], a[larger]);
@@ -319,15 +324,15 @@ void radixSort(int a[], int n, double &time) {
 
     for (int i = 1; i < n; i++)
         if (a[i] > maxVal)
-            maxVal = a[i]; // tim phan tu lon nhat
+            maxVal = a[i]; 
 
     int maxDigits = 0;
     do {
         maxDigits++;
         maxVal /= 10;
-    } while (maxVal > 0); // tim so luong chu so cua phan tu lon nhat
+    } while (maxVal > 0);
 
-    int** tmpArr = new int* [10]; // do co toi da 10 chu so 0 - 9
+    int** tmpArr = new int* [10]; 
     for (int i = 0; i < 10; i++)
         tmpArr[i] = new int[n];
 
@@ -336,13 +341,13 @@ void radixSort(int a[], int n, double &time) {
     for (int i = 0; i < maxDigits; i++) {
         int divide = pow(10, i);
 
-        for (int j = 0; j < 10; j++) // reset lai mang luu so luong
+        for (int j = 0; j < 10; j++) 
             tmpCount[j] = 0;
 
 
         for (int j = 0; j < n; j++) {
             int digit = (a[j] / divide) % 10;
-            tmpArr[digit][tmpCount[digit]++] = a[j]; //Bo vao mang theo cac chu so 0 - 9
+            tmpArr[digit][tmpCount[digit]++] = a[j]; 
         }
 
         int index = 0;
